@@ -37,3 +37,10 @@ class AuthSpider(CrawlSpider):
             raise CloseSpider(
                     reason="The config path specified does not correspond to a json file."
             )
+        try:
+            with open(path) as config_file:
+                json_config_dict = json.loads(config_file)
+        except FileNotFoundError:
+            raise CloseSpider(
+                    reason="Could not find specified path in directory."
+            )    
