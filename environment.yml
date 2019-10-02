@@ -1,6 +1,7 @@
 name: segurata
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - pep8=1.7.1
   - pylint=2.4.2
@@ -8,5 +9,7 @@ dependencies:
   - setuptools=41.2.0
   - wheel=0.33.6
   - pip=19.2.3
+  - scrapy=1.7.3
+  - pytest=5.2.0
   - pip:
     - twine==2.0.0
