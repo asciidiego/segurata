@@ -13,7 +13,7 @@ setuptools.setup(
     description="Tool to extract data from login-based websites.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/diegovincent/venom",
+    url="https://github.com/diegovincent/segurata",
     packages=setuptools.find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
