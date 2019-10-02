@@ -44,3 +44,7 @@ class AuthSpider(CrawlSpider):
             raise CloseSpider(
                     reason="Could not find specified path in directory."
             )    
+        except json.JSONDecodeError:
+            raise CloseSpider(
+                    reason="Invalid JSON format of config file."
+            ) 
