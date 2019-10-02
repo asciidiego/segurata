@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+import json
 import scrapy
+import logging
 from typing import Tuple, ClassVar
+from scrapy.exceptions import CloseSpider
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
