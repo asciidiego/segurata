@@ -32,4 +32,8 @@ class AuthSpider(CrawlSpider):
 
     def _init_user_config(self, path: str):
         'Obtain JSON file from `path` and stores it as a dict in the instance.'
-        raise NotImplementedError()
+
+        if not path.endswith('.json'):
+            raise CloseSpider(
+                    reason="The config path specified does not correspond to a json file."
+            )
