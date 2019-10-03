@@ -29,4 +29,10 @@ def do_login(response: scrapy.http.Response):
     )
 
 def check_login(response: scrapy.http.Response):
+    check_login_selector = response.meta['check_selector']
+    matching_elements = response.css(check_login_selector)
+
+    if not matching_elements:
+        raise NotLoggedInError()
+
     raise NotImplementedError()
