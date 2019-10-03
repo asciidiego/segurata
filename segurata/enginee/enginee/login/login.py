@@ -24,7 +24,8 @@ def do_login(response: scrapy.http.Response):
         url=login_url,
         formdata=formdata,
         callback=check_login,
-        meta={'cookiejar': 0}
+        method='POST',
+        meta={**{'cookiejar': 0}, **response.meta}
     )
 
 def check_login(response: scrapy.http.Response):
