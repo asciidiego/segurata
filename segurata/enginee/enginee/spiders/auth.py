@@ -35,6 +35,6 @@ class AuthSpider(CrawlSpider):
     def _init_user_config(self, path: str):
         'Obtain JSON file from `path` and stores it as a dict in the instance.'
         try:
-            self.config = user_config_parse(path)
+            self.config_dict = user_config_parse(path)
         except UserConfigBaseException as e:
             raise CloseSpider('Could not load user configuration.')
