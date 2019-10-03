@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+import json
 import scrapy
+import logging
 from typing import Tuple, ClassVar
-from scrapy.linkextractors import LinkExtractor
+from scrapy.exceptions import CloseSpider
 from scrapy.spiders import CrawlSpider, Rule
-
+from scrapy.linkextractors import LinkExtractor
+from enginee.user_config.parse import user_config_parse
+from enginee.user_config.exceptions import *
 
 Rules = Tuple[Rule]
 
@@ -29,4 +33,7 @@ class AuthSpider(CrawlSpider):
 
     def _init_user_config(self, path: str):
         'Obtain JSON file from `path` and stores it as a dict in the instance.'
-        raise NotImplementedError()
+        try:
+            config = user_config_parse(path)
+        except UserConfigBaseException as e:
+            raise CloseSpider('Could not load user configuration.')
