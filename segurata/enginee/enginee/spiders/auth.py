@@ -30,10 +30,14 @@ class AuthSpider(CrawlSpider):
     def start_requests(self):
         login_url = self.config_dict['login_url']
         credentials = self.config_dict['credentials']
+        check_login_selector = self.config_dict['check_login_css']
         yield Request(
                 url=login_url, 
                 callback=self.login,
-                meta={'credentials': credentials}
+                meta={
+                    'credentials': credentials,
+                    'check_selector': check_login_selector
+                }
         )
 
     def login(self, response):
