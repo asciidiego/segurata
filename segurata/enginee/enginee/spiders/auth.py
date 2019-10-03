@@ -42,7 +42,7 @@ class AuthSpider(CrawlSpider):
 
     def login(self, response):
         try:
-        yield do_login(response)
+            yield do_login(response)
         except LoginGeneralError:
             pass
 
