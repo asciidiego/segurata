@@ -1,0 +1,8 @@
+{
+    "login_url": "https://www.obasketball.com/index.php?route=account/login",
+    "check_login_css": "div.col-sm-12#content h2",
+    "credentials" : {
+      "username": "ilove@segurata",
+      "password": "olovorg0"
+    }
+  }
