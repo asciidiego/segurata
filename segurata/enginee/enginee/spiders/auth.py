@@ -20,6 +20,7 @@ class AuthSpider(CrawlSpider):
     def __init__(self, *args, **kwargs):
         path_to_user_config = kwargs.get('config')
         self._init_user_config(path_to_user_config)
+        # TODO: Assert that the config has the required credentials
         self._populate_rules()
         super().__init__(*args, **kwargs)
 
