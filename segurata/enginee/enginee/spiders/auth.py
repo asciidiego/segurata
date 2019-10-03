@@ -36,7 +36,10 @@ class AuthSpider(CrawlSpider):
         )
 
     def login(self, response):
+        try:
         yield do_login(response)
+        except LoginGeneralError:
+            pass
 
     def parse_item(self, response):
         item = {}
