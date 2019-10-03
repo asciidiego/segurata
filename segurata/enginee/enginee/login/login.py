@@ -1,6 +1,7 @@
 import scrapy
 from loginform import fill_login_form
 from scrapy import Request, FormRequest
+from .exceptions import *
 
 def do_login(response: scrapy.http.Response):
     """Tries to login using a form created with the credentials provided in the response.
