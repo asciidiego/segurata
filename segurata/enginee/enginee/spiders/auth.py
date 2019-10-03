@@ -3,11 +3,13 @@ import json
 import scrapy
 import logging
 from typing import Tuple, ClassVar
+from scrapy import Request
 from scrapy.exceptions import CloseSpider
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from enginee.user_config.parse import user_config_parse
 from enginee.user_config.exceptions import *
+from enginee.login.login import *
 
 Rules = Tuple[Rule]
 
