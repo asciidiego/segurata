@@ -25,6 +25,18 @@ class AuthSpider(CrawlSpider):
         self._populate_rules()
         super().__init__(*args, **kwargs)
 
+    def start_requests(self):
+        login_url = self.config_dict['login_url']
+        credentials = self.config_dict['credentials']
+        yield Request(
+                url=login_url, 
+                callback=self.login,
+                meta={'credentials': credentials}
+        )
+
+    def login(self, response):
+        yield do_login(response)
+
     def parse_item(self, response):
         item = {}
         return item
