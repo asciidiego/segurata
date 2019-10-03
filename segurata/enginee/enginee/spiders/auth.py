@@ -22,6 +22,7 @@ class AuthSpider(CrawlSpider):
     def __init__(self, *args, **kwargs):
         path_to_user_config = kwargs.get('config')
         self._init_user_config(path_to_user_config)
+        # TODO: Assert that the config has the required credentials
         self._populate_rules()
         super().__init__(*args, **kwargs)
 
@@ -48,6 +49,6 @@ class AuthSpider(CrawlSpider):
     def _init_user_config(self, path: str):
         'Obtain JSON file from `path` and stores it as a dict in the instance.'
         try:
-            self.config = user_config_parse(path)
+            self.config_dict = user_config_parse(path)
         except UserConfigBaseException as e:
             raise CloseSpider('Could not load user configuration.')
