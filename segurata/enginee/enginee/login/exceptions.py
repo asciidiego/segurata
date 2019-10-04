@@ -1,5 +1,5 @@
 class LoginBaseError(Exception):
-    'Segurata was able not login.'
+    'Segurata was not able to login.'
     pass
 
 class NotLoggedInError(LoginBaseError):
