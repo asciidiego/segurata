@@ -5,10 +5,10 @@ from segurata.enginee.enginee.user_config.parse import user_config_parse
 from segurata.enginee.enginee.user_config.exceptions import *
 
 
-PARAMETRIZE = mark.parametrize
+parametrize = mark.parametrize
 
 
-@PARAMETRIZE('format', ['.csv', '.yaml', '.cfg'])
+@parametrize('format', ['.csv', '.yaml', '.cfg'])
 def test_incorrect_formats(format):
     dummy_path = f'./dummy{format}'
     with raises(IncorrectExtensionError):
@@ -28,3 +28,6 @@ def dummy_json_file(request):
 def test_correct_formats(dummy_json_file):
     user_config = user_config_parse(dummy_json_file)
     assert isinstance(user_config, dict)
+
+# TODO: Add tests that assert file that are not found.
+# TODO: Add tests that asser JSON decoding errors.
