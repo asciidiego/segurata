@@ -13,3 +13,4 @@ dependencies:
   - pytest=5.2.0
   - pip:
     - twine==2.0.0
+    - loginform==1.2.0
