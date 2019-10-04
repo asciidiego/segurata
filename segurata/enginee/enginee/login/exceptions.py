@@ -1,4 +1,4 @@
-class LoginGeneralError(Exception):
+class LoginBaseError(Exception):
     'Segurata was able not login.'
     pass
 
