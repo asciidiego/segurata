@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name=PKG_NAME,
-    version="0.0.1",
+    version="0.1.0",
     author="Diego Rodriguez",
     author_email="diego.vincent.rodriguez@gmail.com",
     description="Tool to extract data from login-based websites.",
