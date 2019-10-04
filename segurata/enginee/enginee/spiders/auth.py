@@ -9,7 +9,7 @@ from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from enginee.user_config.parse import user_config_parse
 from enginee.user_config.exceptions import *
-from enginee.login.login import *
+from enginee.login.login import LoginGeneralError
 from enginee.login.exceptions import *
 
 Rules = Tuple[Rule]
