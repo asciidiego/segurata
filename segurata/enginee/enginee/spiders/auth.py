@@ -8,38 +8,46 @@ from scrapy import Request
 from scrapy.exceptions import CloseSpider
 from scrapy.http import Response
 from scrapy.linkextractors import LinkExtractor
-from scrapy.spiders import CrawlSpider, Rule
+from scrapy.spiders import Spider
 
 from enginee.login.exceptions import *
 from enginee.login.login import check_login, login_request
 from enginee.user_config.exceptions import *
 from enginee.user_config.parse import user_config_parse
 
-Rules = Tuple[Rule]
 
+class AuthSpider(Spider):
+    '''Spider that logs in a website and scrapes its content.
+    
+    Arguments:
 
-class AuthSpider(CrawlSpider):
+        config {str} -- path to the configuration file.
+    
+    The configuration files has all the necessary configurations
+    like the credentials and DOM selectors to scrape the items.
+    
+    '''
     name = 'auth'
     start_urls = []
-    rules: ClassVar[Rules] = ()
 
-    def __init__(self, *args, **kwargs):
-        path_to_user_config = kwargs.get('config')
-        self._init_user_config(path_to_user_config)
-        # TODO: Assert that the config has the required credentials
-        self._populate_rules()
+    def __init__(self, *args, config, **kwargs):
+        user_config = user_config_parse(config)
+        self.config = user_config
         super().__init__(*args, **kwargs)
 
     def start_requests(self):
-        login_url = self.config_dict['login_url']
-        credentials = self.config_dict['credentials']
-        check_login_selector = self.config_dict['check_login_css']
-        after_login_url = self.config_dict['after_login_url']
+        config = self.config
+
+        login_url = config.get('login_url')
+        assert login_url is not None, 'Please input login URL.'
+
+        start_urls = config.get('start_urls')
+        assert start_urls is not None, 'Please input URLs to scrape.'
+        self.start_urls = start_urls
 
         login_info = {
-            'credentials': credentials,
-            'check_selector': check_login_selector,
-            'after_login_url': after_login_url,
+            'credentials': config['credentials'],
+            'check_selector': config['check_login_css_selector'],
         }
 
         yield Request(
@@ -48,8 +56,9 @@ class AuthSpider(CrawlSpider):
             cb_kwargs=login_info,
         )
 
+
     def login(self, response: Response, *args, **kwargs):
-        """Logs into the desired and calls the `parse` method.
+        """Log into the desired and calls the `parse` method.
 
         Arguments:
             response {scrapy.http.Response} --
@@ -60,7 +69,7 @@ class AuthSpider(CrawlSpider):
 
         try:
             form_request = login_request(response, credentials=credentials)
-            form_request.callback = check_login
+            form_request.callback = self.check_login
             form_request.cb_kwargs.update({
                 'selector': user_is_logged_in_selector,
                 'after_login_url': after_login_url,
@@ -68,23 +77,30 @@ class AuthSpider(CrawlSpider):
             yield form_request
         except LoginBaseError:
             pass
+    
+    def check_login(self, response: Response, *args, **kwargs):
+        'Check if the user is logged in and start the requests in start_urls.'
+        check_login(response, selector=kwargs.get('selector'))
+        for url in self.start_urls:
+            yield Request(
+                url=url,
+                dont_filter=True,
+                meta={'cookiejar': 0}
+            )
+
 
     def parse(self, response):
         item = {}
+        schemas = self.config.get('schemas', [])
+        
+        for schema in schemas:
+            _schema_name = schema['schema_name']
+            properties = schema['properties']
+            for prop_name, prop_selector in properties.items():
+                item[prop_name] = response.css(prop_selector).extract()
+            yield item
 
-        self.log(
-            'If you have come this far. Congratulations. You are on 0.1.0.',
-            level=logging.CRITICAL,
-        )
-        return item
-
-    def _populate_rules(self):
+    def rules_from_info(self):
         'Create scrapy Rule objects from the user-config.'
-        raise NotImplementedError()
+        pass
 
-    def _init_user_config(self, path: str):
-        'Obtain JSON file from `path` and stores it as a dict in the instance.'
-        try:
-            self.config_dict = user_config_parse(path)
-        except UserConfigBaseException as e:
-            raise CloseSpider('Could not load user configuration.')
