@@ -17,7 +17,14 @@ def main(*args)-> None:
             crawl_args[arg_name] = arg_value
         return crawl_args
 
-    process = CrawlerProcess(get_project_settings())
+    process = CrawlerProcess(settings={
+        'BOT_NAME': 'enginee',
+        'SPIDER_MODULES': ['enginee.spiders'],
+        'NEWSPIDER_MODULE': 'enginee.spiders',
+        'ROBOTSTXT_OBEY': True,
+        'AUTOTHROTTLE_ENABLED': True
+    })
+
     crawl_args = _parse_args()
     process.crawl(crawl_args['name'], config=crawl_args['config'])
     process.start()
