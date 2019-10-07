@@ -10,22 +10,22 @@ from scrapy.http import Response
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Spider
 
-from enginee.login.exceptions import *
-from enginee.login.login import check_login, login_request
-from enginee.user_config.exceptions import *
-from enginee.user_config.parse import user_config_parse
+from ..login.exceptions import *
+from ..login.login import check_login, login_request
+from ..user_config.exceptions import *
+from ..user_config.parse import user_config_parse
 
 
 class AuthSpider(Spider):
     '''Spider that logs in a website and scrapes its content.
-    
+
     Arguments:
 
         config {str} -- path to the configuration file.
-    
+
     The configuration files has all the necessary configurations
     like the credentials and DOM selectors to scrape the items.
-    
+
     '''
     name = 'auth'
     start_urls = []
@@ -77,7 +77,7 @@ class AuthSpider(Spider):
             yield form_request
         except LoginBaseError:
             pass
-    
+
     def check_login(self, response: Response, *args, **kwargs):
         'Check if the user is logged in and start the requests in start_urls.'
         check_login(response, selector=kwargs.get('selector'))
@@ -92,7 +92,7 @@ class AuthSpider(Spider):
     def parse(self, response):
         item = {}
         schemas = self.config.get('schemas', [])
-        
+
         for schema in schemas:
             _schema_name = schema['schema_name']
             properties = schema['properties']
