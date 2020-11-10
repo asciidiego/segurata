@@ -1,0 +1,20 @@
+{
+    "start_urls": [
+      "https://www.obasketball.com/air-jordan-1-gs/women%E2%80%99s-air-jordan-1-retro-high-%E2%80%9Csunset-tint%E2%80%9D-ao1847-645.html"
+    ],
+    "login_url": "https://www.obasketball.com/index.php?route=account/login",
+    "check_login_css_selector": "div.col-sm-12#content h2",
+    "credentials" : {
+      "username": "ilove@segurata.com",
+      "password": "olovorg0"
+    },
+    "schemas": [
+      {
+        "schema_name": "Product",
+        "properties": {
+          "name": "h1",
+          "price": "li h2"
+        }
+      }
+    ]
+  }

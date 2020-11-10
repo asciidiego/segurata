@@ -39,20 +39,11 @@ def login_request(
     )
 
 
-def check_login(response: Response, **kwargs) -> Request:
+def check_login(response: Response, selector: str, *args, **kwargs) -> Request:
     'Return a parametric Request if the user is logged in.'
-    check_login_selector = kwargs.get('selector')
-    matching_elements = response.css(check_login_selector)
-
+    matching_elements = response.css(selector)
     if not matching_elements:
-        raise NotLoggedInError()
-
-    after_login_url = kwargs.get('after_login_url')
-
-    return Request(
-        url=after_login_url,
-        meta={'cookiejar': 0},
-    )
+        raise NotLoggedInError('Could not log in. Maybe try changing selector?')
 
 
 def dumb_callback(response: Response) -> None:
